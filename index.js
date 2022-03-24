@@ -10,8 +10,6 @@ const server = http.createServer((req, res) => {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Method": "GET, POST, PUT, PATCH, DELETE"
     }
-
-    console.log(req.url)
     
     if(req.url == '/products'){
         if(req.method == 'GET'){
@@ -37,10 +35,34 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, 'Post Products Success!', headers)
                 res.end(fs.readFileSync('./data/products.json'))
             })
-        }else if(req.method == 'PUT'){
+        }
+    }else if(req.url.includes('?')){
+        if(req.method == 'PUT'){
             // 
         }else if(req.method == 'PATCH'){
             const queryUrl = url.parse(req.url, true).query
+            const queryId = parseInt(queryUrl.id) 
+            
+            // Step1. Get Data Products
+            let products = JSON.parse(fs.readFileSync('./data/products.json'))
+            let body = []
+
+            req.on('data', (data) => {
+                body.push(data)
+            }).on('end', () => {
+                body = Buffer.concat(body).toString()
+                body = JSON.parse(body)
+
+                let idx = products.findIndex(value => value.id == queryId)
+       
+                products[idx].name = body.name 
+                products[idx].price = body.price 
+
+                fs.writeFileSync('./data/products.json', JSON.stringify(products))
+                res.writeHead(201, 'Update Product Success!', headers)
+                res.end(fs.readFileSync('./data/products.json'))
+
+            })
         }else if(req.method == 'DELETE'){
             // 
         }
@@ -51,3 +73,7 @@ const server = http.createServer((req, res) => {
 })
 
 server.listen(PORT, () => console.log('Server Running on PORT' + PORT))
+
+
+
+// Nodemon ---> npm install -g nodemon ---> nodemon index.js 
