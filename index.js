@@ -21,11 +21,26 @@ const server = http.createServer((req, res) => {
             res.writeHead(200, 'Get Products Success!', headers)
             res.end(products)
         }else if(req.method == 'POST'){
-            // 
+            let body = [] // Variable untuk menampung data yg dikirim oleh frontend
+            
+            // Step1. Get data products
+            let products = JSON.parse(fs.readFileSync('./data/products.json')) // Karakter fs, dia akan mengambil file dan dikonversi dalam bentuk string. Karena masih dalam bentuk string, kita konversi menjadi JSON parse untuk kebutuhan push data dari req.body
+
+            req.on('data', (data) => { // 1.1. Data yang diterima masih dalam bentuk buffer byte
+                body.push(data)
+            }).on('end', () => {
+                body = Buffer.concat(body).toString() // 1.2. Karena datanya masih dalam bentuk buffer, kita konversi dalam bentuk string
+                body = JSON.parse(body) // 1.3. Kita konversi dalam bentuk JSON ---> Untuk kebutuhan push data kedalam variabel products
+                products.push(body)
+
+                fs.writeFileSync('./data/products.json', JSON.stringify(products))
+                res.writeHead(200, 'Post Products Success!', headers)
+                res.end(fs.readFileSync('./data/products.json'))
+            })
         }else if(req.method == 'PUT'){
             // 
         }else if(req.method == 'PATCH'){
-            // 
+            const queryUrl = url.parse(req.url, true).query
         }else if(req.method == 'DELETE'){
             // 
         }

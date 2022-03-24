@@ -1,7 +1,1 @@
-[
-    {
-        "id": 1,
-        "name": "Apel Fuji",
-        "price": 35000
-    }
-]
+[{"id":1,"name":"Apel Fuji","price":35000},{"id":2,"name":"Durian Medan","price":100000}]
