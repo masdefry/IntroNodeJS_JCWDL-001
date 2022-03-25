@@ -42,4 +42,46 @@ app.post('/send-todo', (req, res) => {
 
 })
 
+app.patch('/edit-todo', (req, res) => {
+    // Step-1. 
+    let body = req.body 
+    let id = req.query.id
+
+    // Step-2.
+    let todos = JSON.parse(fs.readFileSync('./data/todos.json'))
+
+    // Step-3. 
+    let idx = todos.findIndex(value => value.id == id)
+
+    // Step-4. 
+    todos[idx].todo = body.todo 
+    todos[idx].tempat = body.tempat 
+
+    fs.writeFileSync('./data/todos.json', JSON.stringify(todos))
+    res.status(201).send({
+        status: 201, 
+        error: false,
+        message: 'Edit Todo Success!',
+        data: JSON.parse(fs.readFileSync('./data/todos.json'))
+    })
+})
+
+app.delete('/delete-todo', (req, res) => {
+    let id = req.query.id 
+
+    let todos = JSON.parse(fs.readFileSync('./data/todos.json'))
+
+    let idx = todos.findIndex(value => value.id == id)
+
+    todos.splice(idx, 1)
+
+    fs.writeFileSync('./data/todos.json', JSON.stringify(todos))
+    res.status(201).send({
+        status: 201, 
+        error: false,
+        message: 'Delete Todo Success!',
+        data: JSON.parse(fs.readFileSync('./data/todos.json'))
+    })
+})
+
 app.listen(PORT, () => console.log('API Running on Port ' + PORT))
