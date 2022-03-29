@@ -72,9 +72,39 @@ SELECT name, sex FROM passengers;
 
 // Like Selection
     // - Mendapatkan penumpang yang diawali dengan huruf a
-    SELECT * FROM passengeres WHERE name like 'a%'; 
+    SELECT * FROM passengeres WHERE name like '%illi%'; 
     https://www.w3schools.com/mysql/mysql_like.asp
 
 
 
 SELECT > WHERE > GROUP > ORDER BY
+
+
+
+// RELASI TABEL
+// - One to Many ---> Tabel many mencatat PK dari si tabel one
+        // Ex. 1 kelas diikuti banyak siswa, dan 1 siswa hanya boleh mengikuti 1 kelas
+// - Many to Many ---> Membutuhkan sebuah tabel connector
+        // Ex. 1 Youtuber boleh diikuti banyak users, dan 1 user boleh nge-subscribe banyak Youtuber
+// - One to One ---> Bebas, kita dapat menyimpan PK dimana saja
+        // Ex. Kebutuhan login
+
+// JOIN TABEL
+// - Inner Join : Mengambil data dengan value yang sama dari kedua tabel
+SELECT * FROM users AS u JOIN
+todos AS t ON u.id = t.users_id;
+
+// - Left Join  : Mengambil data dengan value yang sama dari kedua tabel + value yang berbeda di tabel left nya
+SELECT * FROM users AS u LEFT JOIN
+todos AS t ON u.id = t.users_id;
+
+// - Right Join : Mengambil data dengan value yang sama dari kedua tabel + value yang berbeda di tabel right nya
+SELECT * FROM users AS u RIGHT JOIN
+todos AS t ON u.id = t.users_id;
+
+// - Outer Join : Mengambil semua data dari kedua tabel
+SELECT * FROM users AS u LEFT JOIN 
+todos AS t ON u.id = t.users_id
+UNION
+SELECT * FROM users AS u RIGHT JOIN
+todos AS t ON u.id = t.users_id;
