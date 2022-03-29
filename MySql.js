@@ -89,6 +89,8 @@ SELECT > WHERE > GROUP > ORDER BY
 // - One to One ---> Bebas, kita dapat menyimpan PK dimana saja
         // Ex. Kebutuhan login
 
+
+
 // JOIN TABEL
 // - Inner Join : Mengambil data dengan value yang sama dari kedua tabel
 SELECT * FROM users AS u JOIN
@@ -108,3 +110,35 @@ todos AS t ON u.id = t.users_id
 UNION
 SELECT * FROM users AS u RIGHT JOIN
 todos AS t ON u.id = t.users_id;
+
+
+
+// CONSTRAINT FOREIGN KEY
+// - Cascade : Merubah semua datanya ketika terjadi perubahan
+// - Restrict : Kita tidak dapat merubah datanya ketika data kita digunakan di tabel lain
+
+
+
+// SEARCH
+// - Linier Searching
+    // By default, PK udah linier
+// - Binary Searching
+    // Cepat ketika search data
+    // Lambat ketika terdapat baru, karena mesti merubah struktur binary tree
+
+    CREATE INDEX nama_index ON nama_tabel(kolom_data); // Membuat indexing
+    DROP INDEX nama_index ON nama_tabel; // Menghapus indexing
+
+
+
+// VIEW : Untuk menyimpan query yang telah kita buat
+CREATE VIEW nama_viewnya AS SELECT * FROM passengers;
+
+
+
+// TRIGGERS
+    // 1. Config tabel yang dituju
+    // 2. Tab triggers
+    // 3. Before insert : 
+    SET NEW.username = LOWER(NEW.username);
+
