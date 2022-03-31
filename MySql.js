@@ -142,3 +142,31 @@ CREATE VIEW nama_viewnya AS SELECT * FROM passengers;
     // 3. Before insert : 
     SET NEW.username = LOWER(NEW.username);
 
+
+
+// EVENT SCHEDULER
+// 1. One time event ---> Hanya jalan sekali eventnya
+//      Ex. Menentukan expired transaction
+// 2. Recuring event ---> Jalan berkali-kali eventnya
+//      Ex. Backup data setiap 1 minggu sekali, Create table untuk report
+
+USE todos;
+
+SHOW EVENTS;
+ALTER EVENT Event1 DISABLE; 
+DROP EVENT Event1;
+
+-- One Time Event
+CREATE EVENT Event1 
+ON SCHEDULE AT date_add(now(), INTERVAL 1 MINUTE)
+DO 
+	INSERT INTO users (username, email, password) 
+    VALUES ('username1', 'username1@gmail.com', '123123123');
+    
+--  Recuring Event
+CREATE EVENT Event1
+ON SCHEDULE EVERY 1 MINUTE
+STARTS '2022-03-31 09:36:00'
+DO
+	INSERT INTO users (username, email, password) 
+    VALUES ('username2', 'username2@gmail.com', '123123123');
